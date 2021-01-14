@@ -31,6 +31,7 @@ script:
 deploy:
   provider: script
   script:
+  #
     # push to dockerhub
     docker push danielaocampo/empleado-back;
     docker push registry.heroku.com/$HEROKU_APP_NAME/web;
