@@ -1,19 +1,39 @@
-language: java 
+## YAML Template.
+sudo: required
+language: java
 jdk:
-- oraclejdk9 
+- oraclejdk8
 services:
-- mysql 
-dist: trusty 
-sudo: required 
+- mysql
+- docker
+dist: trusty
+sudo: required
 addons:
-  apt: 
-    packages: 
-    - mysql-server-5.6 
-    - mysql-client-core-5.6 
-    - mysql-client-5.6
-before_script: 
-- mysql -u root -e 'CREATE DATABASE human;' 
-- mysql -u root -e "CREATE USER 'sa'@'localhost' IDENTIFIED BY 'sa';" 
-- mysql -u root -e "GRANT ALL ON human.* TO 'sa'@'localhost';" 
-before_install: 
+apt:
+packages:
+- mysql-server-5.7
+- mysql-client-core-5.7
+- mysql-client-5.7
+before_script:
+- mysql -u root -e 'CREATE DATABASE empleado;'
+- mysql -u root -e "CREATE USER 'sa'@'localhost' IDENTIFIED BY 'sa';"
+- mysql -u root -e "GRANT ALL ON empleado.* TO 'sa'@'localhost';"
+before_install:
+# install heroku CLI
+- wget -qO- https://toolbelt.heroku.com/install.sh | sh
 - chmod +x mvnw
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+- echo "$HEROKU_PASSWORD" | docker login -u "$HEROKU_USERNAME" --password-stdin registry.heroku.com
+script:
+- cd bootdocker
+- docker build -t danielaocampo/empleado-back .
+- docker tag danielaocampo/empleado-back registry.heroku.com/$HEROKU_APP_NAME/web
+deploy:
+  provider: script
+  script:
+    # push to dockerhub
+    docker push danielaocampo/empleado-back;
+    docker push registry.heroku.com/$HEROKU_APP_NAME/web;
+    heroku container:release web --app $HEROKU_APP_NAME
+  on:
+    branch: main
