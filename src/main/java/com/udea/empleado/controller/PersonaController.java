@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PutMapping; 
 
 @RestController
-@RequestMapping("/persona")
+@RequestMapping("/empleado")
 @CrossOrigin("*")
 
 @Api(value = "Employee Management System", description = "Operations pertaining to employee in Person Management System")
@@ -36,12 +36,13 @@ public class PersonaController {
     @Autowired
     PersonaService personService;
 
-    @ApiOperation(value = "Add a person")
+    @ApiOperation(value = "Add Employee")
     @PostMapping("/save")
-    public long save(@ApiParam(value = "Employee object store in database table", required = true) @RequestBody Persona person) {
-        personService.save(person);
-        return person.getIdPerson();
+    public long save(@ApiParam(value = "Employee saved in the BD", required = true) @RequestBody Persona persona) {
+        personService.save(persona);
+        return persona.getIdPerson();
     }
+    
 @ApiOperation(value = "View a list of available persons", response = List.class)
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "Successfully retrieved list")
@@ -52,6 +53,7 @@ public class PersonaController {
         ,
     @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
+
     @GetMapping("/listAll")
     public Iterable<Persona> listAllPersons() {
         return personService.list();

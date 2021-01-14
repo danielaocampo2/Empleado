@@ -38,8 +38,10 @@ import java.time.LocalDate;
 public class Persona implements Serializable {
     
     @ApiModelProperty(notes="La BD genera el ID de la persona")
+    
+  
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name="idperson")
     private Long idPerson;
     
