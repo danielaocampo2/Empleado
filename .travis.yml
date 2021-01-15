@@ -1,5 +1,4 @@
 ## YAML Template.
-sudo: required
 language: java
 jdk:
 - oraclejdk8
@@ -9,11 +8,11 @@ services:
 dist: trusty
 sudo: required
 addons:
-apt:
-packages:
-- mysql-server-5.7
-- mysql-client-core-5.7
-- mysql-client-5.7
+  apt:
+  packages:
+  - mysql-server-5.7
+  - mysql-client-core-5.7
+  - mysql-client-5.7
 before_script:
 - mysql -u root -e 'CREATE DATABASE empleado;'
 - mysql -u root -e "CREATE USER 'sa'@'localhost' IDENTIFIED BY 'sa';"
