@@ -99,5 +99,24 @@ public class PersonaController {
                     return personService.save(employee);
                 });
     }
+    
+    @ApiOperation(value = "Increase salary if Attachment date > 2 years")
+    @PutMapping("/update/increase/{id}")
+    public String increaseSalary(@PathVariable Long id) {
+        LocalDate twoYearsAgo = LocalDate.now().minusYears(2);
+        Optional<Persona> newPersona = personService.listId(id);
+        if (newPersona.isPresent()) {
+            if (newPersona.get().getAttachmentDate().isBefore(twoYearsAgo)) {
+                double salaryWithInc = (newPersona.get().getBaseSalary() * 0.1) + newPersona.get().getBaseSalary();
+                newPersona.get().setBaseSalary(salaryWithInc);
+                personService.save(newPersona.get());
+                return "Nuevo salario = " + newPersona.get().getBaseSalary().toString();
+            } else {
+                return "La persona no cumple con la antiguedad necesaria";
+            }
+        }
+        throw new ModelNotFoundException("Persona no encontrada");
+    }
+
 
 }
