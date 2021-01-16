@@ -101,7 +101,7 @@ public class PersonaController {
     }
     
     @ApiOperation(value = "Increase salary if Attachment date > 2 years")
-    @PutMapping("/update/increase/{id}")
+    @PutMapping("/increase/{id}")
     public String increaseSalary(@PathVariable Long id) {
         LocalDate twoYearsAgo = LocalDate.now().minusYears(2);
         Optional<Persona> newPersona = personService.listId(id);
@@ -109,7 +109,9 @@ public class PersonaController {
             if (newPersona.get().getAttachmentDate().isBefore(twoYearsAgo)) {
                 double salaryWithInc = (newPersona.get().getBaseSalary() * 0.1) + newPersona.get().getBaseSalary();
                 newPersona.get().setBaseSalary(salaryWithInc);
+                newPersona.get().setStatus("inactivo");
                 personService.save(newPersona.get());
+             
                 return "Nuevo salario = " + newPersona.get().getBaseSalary().toString();
             } else {
                 return "La persona no cumple con la antiguedad necesaria";

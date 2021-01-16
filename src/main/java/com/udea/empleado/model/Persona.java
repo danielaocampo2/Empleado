@@ -81,4 +81,9 @@ public class Persona implements Serializable {
     @Column(name="attachment", nullable=false, length=30)
     private LocalDate attachmentDate;
     
+    
+    @ApiModelProperty(notes="Estado del empleado")
+    @Column(name="status", length=30)
+    private String status ="activo";
+    
 }
