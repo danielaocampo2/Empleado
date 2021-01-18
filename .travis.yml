@@ -2,6 +2,9 @@
 language: java
 jdk:
 - oraclejdk8
+branches:
+  only:
+  - main
 services:
 - mysql
 - docker
@@ -29,12 +32,9 @@ script:
 - docker build -t danielaocampo/empleado-back .
 - docker tag danielaocampo/empleado-back registry.heroku.com/$HEROKU_APP_NAME/web
 deploy:
-  provider: script
-  script:
-    # push to dockerhub
-    #
-    docker push danielaocampo/empleado-back;
-    docker push registry.heroku.com/$HEROKU_APP_NAME/web;
-    heroku container:release web --app $HEROKU_APP_NAME
-  on:
-    branch: main
+  provider: heroku
+  skip_cleanup: true
+  keep-history: true
+  api-key:
+    secure: $HEROKU_API_KEY
+  app: empleado123
