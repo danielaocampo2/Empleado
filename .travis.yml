@@ -31,6 +31,7 @@ script:
 - cd bootdocker
 - docker build -t danielaocampo/empleado-back .
 - docker tag danielaocampo/empleado-back registry.heroku.com/$HEROKU_APP_NAME/web
+
 deploy:
   provider: heroku
   skip_cleanup: true
