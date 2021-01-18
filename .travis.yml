@@ -4,7 +4,7 @@ jdk:
 - oraclejdk8
 branches:
   only:
-  - main
+  - master
 services:
 - mysql
 - docker
